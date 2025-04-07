@@ -1,37 +1,79 @@
+import manager.Manager;
+import task.Epic;
+import task.Status;
+import task.Subtask;
+import task.Task;
+
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Поехали!");
         Manager manager = new Manager();
-        manager.addTask(new Task("Task 1", "Description task 1 "));
-        manager.addTask(new Task("Task 2", " Description task 2 "));
-        Epic epic1 = new Epic("Epic 1", "Description epic 1");
+
+        Task task1 = new Task("Task1", "Description task1");
+        Task task2 = new Task("Task2", "Description task2");
+        manager.addTask(task1);
+        manager.addTask(task2);
+
+        Epic epic1 = new Epic("Epic1", "Description epic1");
+        Epic epic2 = new Epic("Epic2", "Description epic2");
         manager.addTask(epic1);
-        manager.addTask(new Epic("Epic 2", "Description epic 2"));
-        Subtask subtask1 = new Subtask("Subtask 1", "description subtask 1", epic1);
-        Subtask subtask1changed = new Subtask(subtask1.getId(), " Changed subtask1", " chenged 1 ", epic1, Status.DONE);
-        Subtask subtask3 = new Subtask("Subtask 3", "description subtask 3", manager.getAllEpic().get(1));
 
-        Subtask subtask3Changed = new Subtask(subtask3.getId(), "Subtask 3 changed", "description subtask 3changd ", manager.getAllEpic().get(1), Status.DONE);
-        manager.addTask(new Subtask("Subtask 2", "description subtask 2", manager.getAllEpic().get(0)));
+        Subtask subtask1 = new Subtask("Subtask1", "Description subtask1", epic1);
+        Subtask subtask2 = new Subtask("Subtask2", "Description subtask2", epic1);
+        manager.addTask(subtask1);
+        manager.addTask(subtask2);
+
+        manager.addTask(epic2);
+        Subtask subtask3 = new Subtask("Subtask3", "Description subtask3", epic2);
+        manager.addTask(subtask3);
 
 
-        Task taskToChange = new Task("task to change", " change it");
-        System.out.println(taskToChange);
-        Task updatedTask = new Task(taskToChange.getId(), "Changed task", "we already changed it",
-                Status.IN_PROGRESS);
-        manager.updateTask(updatedTask);
-        System.out.println(manager.findById(taskToChange.getId()));
-        System.out.println("-------------------");
+        System.out.println("All tasks:");
+        for (Task task : manager.getAllTasks()) {
+            System.out.println(task);
+        }
 
-        System.out.println(manager.getAllEpic().toString());
-        manager.deleteById(manager.getAllEpic().get(0).getId());
+        System.out.println("All epics:");
+        for (Epic epic : manager.getAllEpic()) {
+            System.out.println(epic);
+        }
 
-        System.out.println(manager.getAllEpic().toString());
+        System.out.println("All subtasks:");
+        for (Subtask sub : manager.getAllSubtasks()) {
+            System.out.println(sub);
+        }
 
-        System.out.println(manager.getTasks().toString());
+        task1.setStatus(Status.DONE);
+        subtask2.setStatus(Status.IN_PROGRESS);
+        subtask3.setStatus(Status.DONE);
 
-        manager.deleteAllTasks();
-        System.out.println("Is it deleted " + manager.getTasks().isEmpty());
+        manager.updateTask(task1);
+        manager.updateTask(subtask1);
+        manager.updateTask(subtask2);
+        manager.updateTask(subtask3);
+
+        System.out.println("After status updates:");
+        System.out.println("Task1: " + manager.findById(task1.getId()));
+        System.out.println("Epic1: " + manager.findById(epic1.getId()));
+        System.out.println("Epic2: " + manager.findById(epic2.getId()));
+
+        manager.deleteById(task2.getId());
+        manager.deleteById(epic1.getId());
+
+        System.out.println("After deletions:");
+        System.out.println("All tasks:");
+        for (Task task : manager.getAllTasks()) {
+            System.out.println(task);
+        }
+
+        System.out.println("All epics:");
+        for (Epic epic : manager.getAllEpic()) {
+            System.out.println(epic);
+        }
+
+        System.out.println("All subtasks:");
+        for (Subtask sub : manager.getAllSubtasks()) {
+            System.out.println(sub);
+        }
     }
 }
