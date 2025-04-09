@@ -58,17 +58,15 @@ public class Manager {
                 Epic epic = (Epic) tasks.get(id);
                 ArrayList<Integer> subtask = epic.getSubtasks();
                 for (int idOfSubtask : subtask) {
-                    tasks.remove(idOfSubtask);
+                    tasks.remove(Integer.valueOf(idOfSubtask));
                 }
             } else if (tasks.get(id).getType() == TaskType.SUBTASK) {
                 Subtask subtask = (Subtask) tasks.get(id);
                 Epic epic = (Epic) tasks.get(subtask.getIdOfEpic());
-                ArrayList<Integer> subtasksOfEpic = epic.getSubtasks();
-                subtasksOfEpic.remove(id);
-                epic.setSubtasks(subtasksOfEpic);
+                epic.deleteSubtaskFromEpic(id);
                 epic.updateStatus(tasks);
             }
-            tasks.remove(id);
+            tasks.remove(Integer.valueOf(id));
         }
     }
 
@@ -98,9 +96,8 @@ public class Manager {
             for (int idOfSubtasksOfEpic : epic.getSubtasks()) {
                 subtasks.add((Subtask) tasks.get(idOfSubtasksOfEpic));
             }
-            return subtasks;
         }
-        return null;
+        return subtasks;
     }
 
     public ArrayList<Task> getAllTasks() {
@@ -134,7 +131,4 @@ public class Manager {
         return task;
     }
 
-    public void setTasks(HashMap<Integer, Task> tasks) {
-        this.tasks = tasks;
-    }
 }

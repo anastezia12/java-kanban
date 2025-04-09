@@ -54,6 +54,9 @@ public class Epic extends Task {
         this.subtasksId = subtasksId;
     }
 
+    public void deleteSubtaskFromEpic(int id){
+        subtasksId.remove(Integer.valueOf(id));
+    }
     @Override
     public TaskType getType() {
         return TaskType.EPIC;
