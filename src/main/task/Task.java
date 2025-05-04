@@ -1,4 +1,4 @@
-package task;
+package main.task;
 
 import java.util.Objects;
 
@@ -73,7 +73,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "task.Task{" + "id=" + id + ", name='" + name + '\'' + ", description='" + description + '\'' + ", status=" + status + '}';
+        return "main.task.Task{" + "id=" + id + ", name='" + name + '\'' + ", description='" + description + '\'' + ", status=" + status + '}';
     }
 
     public TaskType getType() {

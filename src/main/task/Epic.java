@@ -1,4 +1,4 @@
-package task;
+package main.task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,9 +54,10 @@ public class Epic extends Task {
         this.subtasksId = subtasksId;
     }
 
-    public void deleteSubtaskFromEpic(int id){
+    public void deleteSubtaskFromEpic(int id) {
         subtasksId.remove(Integer.valueOf(id));
     }
+
     @Override
     public TaskType getType() {
         return TaskType.EPIC;
@@ -64,6 +65,6 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "task.Epic{" + super.toString() + ", subtasks=" + subtasksId + '}';
+        return "main.task.Epic{" + super.toString() + ", subtasks=" + subtasksId + '}';
     }
 }

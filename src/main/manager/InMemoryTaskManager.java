@@ -1,18 +1,21 @@
-package manager;
+package main.manager;
 
-import task.Epic;
-import task.Subtask;
-import task.Task;
-import task.TaskType;
+import main.task.Epic;
+import main.task.Subtask;
+import main.task.Task;
+import main.task.TaskType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Manager {
+public class InMemoryTaskManager implements TaskManager {
+
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
     private HashMap<Integer, Task> tasks;
     private int counter = 1;
 
-    public Manager() {
+    public InMemoryTaskManager() {
+        super();
         this.tasks = new HashMap<>();
     }
 
@@ -21,6 +24,7 @@ public class Manager {
         task.setId(counter);
         if (task.getType() == TaskType.SUBTASK) {
             Subtask subtask = (Subtask) task;
+
             Epic epic = (Epic) tasks.get(subtask.getIdOfEpic());
             epic.addSubtask(subtask);
             epic.updateStatus(tasks);
@@ -79,11 +83,13 @@ public class Manager {
             }
 
             tasks.put(task.getId(), task);
+            historyManager.add(task);
         }
     }
 
     public Task findById(int id) {
         if (tasks.containsKey(id)) {
+            historyManager.add(tasks.get(id));
             return tasks.get(id);
         }
         return null;
@@ -94,6 +100,8 @@ public class Manager {
         ArrayList<Subtask> subtasks = new ArrayList<>();
         if (epic != null) {
             for (int idOfSubtasksOfEpic : epic.getSubtasks()) {
+
+                historyManager.add(tasks.get(idOfSubtasksOfEpic));
                 subtasks.add((Subtask) tasks.get(idOfSubtasksOfEpic));
             }
         }
@@ -104,6 +112,8 @@ public class Manager {
         ArrayList<Task> task = new ArrayList<>();
         for (Task tasksInManager : tasks.values()) {
             if (tasksInManager.getType() == TaskType.TASK) {
+
+                historyManager.add(tasksInManager);
                 task.add(tasksInManager);
             }
         }
@@ -115,6 +125,8 @@ public class Manager {
         ArrayList<Epic> task = new ArrayList<>();
         for (Task tasksInManager : tasks.values()) {
             if (tasksInManager.getType() == TaskType.EPIC) {
+
+                historyManager.add(tasksInManager);
                 task.add((Epic) tasksInManager);
             }
         }
@@ -125,10 +137,16 @@ public class Manager {
         ArrayList<Subtask> task = new ArrayList<>();
         for (Task tasksInManager : tasks.values()) {
             if (tasksInManager.getType() == TaskType.SUBTASK) {
+
+                historyManager.add(tasksInManager);
                 task.add((Subtask) tasksInManager);
             }
         }
         return task;
+    }
+
+    public HistoryManager getHistoryManager() {
+        return historyManager;
     }
 
 }

@@ -1,4 +1,4 @@
-package task;
+package main.task;
 
 public enum TaskType {
     TASK,
