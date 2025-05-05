@@ -1,21 +1,27 @@
 package main.task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class Epic extends Task {
-    private ArrayList<Integer> subtasksId;
+    private List<Integer> subtasksId;
 
     public Epic(String name, String description) {
         super(name, description);
-        subtasksId = new ArrayList<>();
+        subtasksId = new LinkedList<>();
+    }
+
+    public Epic(Epic epic) {
+        super(epic.getId(), epic.getName(), epic.getDescription(), epic.getStatus());
+        subtasksId = epic.subtasksId;
     }
 
     public void addSubtask(Subtask subtask) {
         subtasksId.add(subtask.getId());
     }
 
-    public void updateStatus(HashMap<Integer, Task> tasks) {
+    public void updateStatus(Map<Integer, Task> tasks) {
         if (subtasksId.isEmpty()) {
             setStatus(Status.NEW);
             return;
@@ -46,11 +52,11 @@ public class Epic extends Task {
         }
     }
 
-    public ArrayList<Integer> getSubtasks() {
+    public List<Integer> getSubtasks() {
         return subtasksId;
     }
 
-    public void setSubtasks(ArrayList<Integer> subtasksId) {
+    public void setSubtasks(List<Integer> subtasksId) {
         this.subtasksId = subtasksId;
     }
 

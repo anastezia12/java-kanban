@@ -1,45 +1,28 @@
 package main.manager;
 
-import main.task.Epic;
-import main.task.Subtask;
 import main.task.Task;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    ArrayList<Task> history;
+    private final List<Task> history;
 
     public InMemoryHistoryManager() {
-        history = new ArrayList<>();
+        history = new LinkedList<>();
     }
 
 
     @Override
-    public void add(Task task) {
-        Task taskCopy;
-        switch (task.getType()) {
-            case TASK:
-                taskCopy = new Task(task.getName(), task.getDescription());
-                break;
-            case EPIC:
-                taskCopy = new Epic(task.getName(), task.getDescription());
-                break;
-            case SUBTASK:
-                taskCopy = new Subtask(task.getName(), task.getDescription(), ((Subtask) task).getIdOfEpic());
-                break;
-            default:
-                return;
-        }
-        taskCopy.setId(task.getId());
-        taskCopy.setStatus(task.getStatus());
-        history.add(taskCopy);
-        while (history.size() > 10) {
+    public void add(Task task) {//
+        history.add(task);
+        while (history.size() > MAX_HISTORY_SIZE) {
             history.removeFirst();
         }
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
-        return history;
+    public List<Task> getHistory() {
+        return new LinkedList<>(history);
     }
 }

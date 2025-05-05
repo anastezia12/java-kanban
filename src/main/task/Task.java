@@ -22,6 +22,13 @@ public class Task {
 
     }
 
+    public Task(Task task) {
+        id = task.id;
+        name = task.name;
+        description = task.description;
+        status = task.status;
+    }
+
     public int getId() {
         return id;
     }

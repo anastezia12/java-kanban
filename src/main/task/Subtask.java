@@ -8,9 +8,9 @@ public class Subtask extends Task {
         idOfEpic = epic.getId();
     }
 
-    public Subtask(String name, String description, int idOfEpic) {
-        super(name, description);
-        this.idOfEpic = idOfEpic;
+    public Subtask(Subtask subtask) {
+        super(subtask.getId(), subtask.getName(), subtask.getDescription(), subtask.getStatus());
+        idOfEpic = subtask.idOfEpic;
     }
 
     @Override

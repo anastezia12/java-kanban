@@ -5,18 +5,19 @@ import main.task.Subtask;
 import main.task.Task;
 import main.task.TaskType;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
 
     private final HistoryManager historyManager = Managers.getDefaultHistory();
-    private HashMap<Integer, Task> tasks;
+    private final Map<Integer, Task> tasks;
     private int counter = 1;
 
     public InMemoryTaskManager() {
-        super();
-        this.tasks = new HashMap<>();
+        tasks = new HashMap<>();
     }
 
     public void addTask(Task task) {
@@ -60,7 +61,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (tasks.containsKey(id)) {
             if (tasks.get(id).getType() == TaskType.EPIC) {
                 Epic epic = (Epic) tasks.get(id);
-                ArrayList<Integer> subtask = epic.getSubtasks();
+                List<Integer> subtask = epic.getSubtasks();
                 for (int idOfSubtask : subtask) {
                     tasks.remove(Integer.valueOf(idOfSubtask));
                 }
@@ -89,31 +90,29 @@ public class InMemoryTaskManager implements TaskManager {
 
     public Task findById(int id) {
         if (tasks.containsKey(id)) {
-            historyManager.add(tasks.get(id));
+            historyManager.add(copyOfTask(tasks.get(id)));
             return tasks.get(id);
         }
         return null;
     }
 
-    public ArrayList<Subtask> getAllSubtaskFromEpic(int idOfEpic) {
+    public List<Subtask> getAllSubtaskFromEpic(int idOfEpic) {
         Epic epic = (Epic) tasks.get(idOfEpic);
-        ArrayList<Subtask> subtasks = new ArrayList<>();
+        List<Subtask> subtasks = new LinkedList<>();
         if (epic != null) {
             for (int idOfSubtasksOfEpic : epic.getSubtasks()) {
-
-                historyManager.add(tasks.get(idOfSubtasksOfEpic));
+                historyManager.add(copyOfTask(tasks.get(idOfSubtasksOfEpic)));
                 subtasks.add((Subtask) tasks.get(idOfSubtasksOfEpic));
             }
         }
         return subtasks;
     }
 
-    public ArrayList<Task> getAllTasks() {
-        ArrayList<Task> task = new ArrayList<>();
+    public List<Task> getAllTasks() {
+        List<Task> task = new LinkedList<>();
         for (Task tasksInManager : tasks.values()) {
             if (tasksInManager.getType() == TaskType.TASK) {
-
-                historyManager.add(tasksInManager);
+                historyManager.add(copyOfTask(tasksInManager));
                 task.add(tasksInManager);
             }
         }
@@ -121,24 +120,22 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
 
-    public ArrayList<Epic> getAllEpic() {
-        ArrayList<Epic> task = new ArrayList<>();
+    public List<Epic> getAllEpic() {
+        List<Epic> task = new LinkedList<>();
         for (Task tasksInManager : tasks.values()) {
             if (tasksInManager.getType() == TaskType.EPIC) {
-
-                historyManager.add(tasksInManager);
+                historyManager.add(copyOfTask(tasksInManager));
                 task.add((Epic) tasksInManager);
             }
         }
         return task;
     }
 
-    public ArrayList<Subtask> getAllSubtasks() {
-        ArrayList<Subtask> task = new ArrayList<>();
+    public List<Subtask> getAllSubtasks() {
+        List<Subtask> task = new LinkedList<>();
         for (Task tasksInManager : tasks.values()) {
             if (tasksInManager.getType() == TaskType.SUBTASK) {
-
-                historyManager.add(tasksInManager);
+                historyManager.add(copyOfTask(tasksInManager));
                 task.add((Subtask) tasksInManager);
             }
         }
@@ -149,4 +146,16 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager;
     }
 
+    private Task copyOfTask(Task task) {
+        switch (task.getType()) {
+            case TASK:
+                return new Task(task);
+            case EPIC:
+                return new Epic((Epic) task);
+            case SUBTASK:
+                return new Subtask((Subtask) task);
+            default:
+                return null;
+        }
+    }
 }
