@@ -90,7 +90,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     public Task findById(int id) {
         if (tasks.containsKey(id)) {
-            historyManager.add(copyOfTask(tasks.get(id)));
+            historyManager.add(tasks.get(id).copy());
             return tasks.get(id);
         }
         return null;
@@ -101,7 +101,7 @@ public class InMemoryTaskManager implements TaskManager {
         List<Subtask> subtasks = new LinkedList<>();
         if (epic != null) {
             for (int idOfSubtasksOfEpic : epic.getSubtasks()) {
-                historyManager.add(copyOfTask(tasks.get(idOfSubtasksOfEpic)));
+                historyManager.add(tasks.get(idOfSubtasksOfEpic).copy());
                 subtasks.add((Subtask) tasks.get(idOfSubtasksOfEpic));
             }
         }
@@ -112,7 +112,7 @@ public class InMemoryTaskManager implements TaskManager {
         List<Task> task = new LinkedList<>();
         for (Task tasksInManager : tasks.values()) {
             if (tasksInManager.getType() == TaskType.TASK) {
-                historyManager.add(copyOfTask(tasksInManager));
+                historyManager.add(tasksInManager.copy());
                 task.add(tasksInManager);
             }
         }
@@ -124,7 +124,7 @@ public class InMemoryTaskManager implements TaskManager {
         List<Epic> task = new LinkedList<>();
         for (Task tasksInManager : tasks.values()) {
             if (tasksInManager.getType() == TaskType.EPIC) {
-                historyManager.add(copyOfTask(tasksInManager));
+                historyManager.add(tasksInManager.copy());
                 task.add((Epic) tasksInManager);
             }
         }
@@ -135,7 +135,7 @@ public class InMemoryTaskManager implements TaskManager {
         List<Subtask> task = new LinkedList<>();
         for (Task tasksInManager : tasks.values()) {
             if (tasksInManager.getType() == TaskType.SUBTASK) {
-                historyManager.add(copyOfTask(tasksInManager));
+                historyManager.add(tasksInManager.copy());
                 task.add((Subtask) tasksInManager);
             }
         }
@@ -144,18 +144,5 @@ public class InMemoryTaskManager implements TaskManager {
 
     public HistoryManager getHistoryManager() {
         return historyManager;
-    }
-
-    private Task copyOfTask(Task task) {
-        switch (task.getType()) {
-            case TASK:
-                return new Task(task);
-            case EPIC:
-                return new Epic((Epic) task);
-            case SUBTASK:
-                return new Subtask((Subtask) task);
-            default:
-                return null;
-        }
     }
 }

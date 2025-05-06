@@ -73,4 +73,9 @@ public class Epic extends Task {
     public String toString() {
         return "main.task.Epic{" + super.toString() + ", subtasks=" + subtasksId + '}';
     }
+
+    @Override
+    public Epic copy() {
+        return new Epic(this);
+    }
 }
