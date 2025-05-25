@@ -21,8 +21,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public void addTask(Task task) {
-        tasks.put(counter, task);
         task.setId(counter);
+        tasks.put(counter, task);
         if (task.getType() == TaskType.SUBTASK) {
             Subtask subtask = (Subtask) task;
 
@@ -30,6 +30,8 @@ public class InMemoryTaskManager implements TaskManager {
             epic.addSubtask(subtask);
             epic.updateStatus(tasks);
         }
+
+        historyManager.add(task);
         counter++;
     }
 
@@ -63,7 +65,9 @@ public class InMemoryTaskManager implements TaskManager {
                 Epic epic = (Epic) tasks.get(id);
                 List<Integer> subtask = epic.getSubtasks();
                 for (int idOfSubtask : subtask) {
+                    tasks.get(Integer.valueOf(idOfSubtask)).setId(0);
                     tasks.remove(Integer.valueOf(idOfSubtask));
+                    historyManager.remove(idOfSubtask);
                 }
             } else if (tasks.get(id).getType() == TaskType.SUBTASK) {
                 Subtask subtask = (Subtask) tasks.get(id);
@@ -71,7 +75,9 @@ public class InMemoryTaskManager implements TaskManager {
                 epic.deleteSubtaskFromEpic(id);
                 epic.updateStatus(tasks);
             }
+            tasks.get(Integer.valueOf(id)).setId(0);
             tasks.remove(Integer.valueOf(id));
+            historyManager.remove(id);
         }
     }
 
