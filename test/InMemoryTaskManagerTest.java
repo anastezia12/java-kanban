@@ -1,5 +1,3 @@
-package test;
-
 import main.manager.Managers;
 import main.manager.TaskManager;
 import main.task.Epic;

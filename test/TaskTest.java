@@ -1,5 +1,3 @@
-package test;
-
 import main.task.Epic;
 import main.task.Task;
 import org.junit.jupiter.api.Test;
