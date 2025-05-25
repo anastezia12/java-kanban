@@ -1,10 +1,6 @@
 package main.data;
 
-import main.task.Task;
-
-import static java.awt.SystemColor.info;
-
-public class Node <T>{
+public class Node<T> {
     private T info;
     private Node<T> prev;
     private Node<T> next;

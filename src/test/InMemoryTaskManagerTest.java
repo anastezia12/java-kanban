@@ -122,7 +122,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void removeAllSubtasksFromHistoryFromEpicWhenDeletingEpic(){
+    public void removeAllSubtasksFromHistoryFromEpicWhenDeletingEpic() {
         inMemoryTaskManager.addTask(epic1);
         Subtask subtask1 = new Subtask("task", "task", epic1);
         Subtask subtask2 = new Subtask("task", "task", epic1);

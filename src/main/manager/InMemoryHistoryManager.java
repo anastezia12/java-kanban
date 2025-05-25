@@ -1,15 +1,18 @@
 package main.manager;
 
-import jdk.dynalink.NoSuchDynamicMethodException;
 import main.data.Node;
 import main.task.Task;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private Map<Integer, Node<Task>> history;
-private Node<Task> head;
-private Node<Task> tail;
+    private Node<Task> head;
+    private Node<Task> tail;
+
     public InMemoryHistoryManager() {
         history = new HashMap<>();
         head = null;
@@ -24,7 +27,7 @@ private Node<Task> tail;
         }
 
         if (node.getNext() != null) {
-            node.getNext().setPrev( node.getPrev());
+            node.getNext().setPrev(node.getPrev());
         } else {
             tail = node.getPrev();
         }

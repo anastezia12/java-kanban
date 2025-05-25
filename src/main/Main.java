@@ -35,7 +35,7 @@ public class Main {
         }
 
         System.out.println("All history:");
-        for (Task task : taskManager.getHistoryManager().getHistory()){
+        for (Task task : taskManager.getHistoryManager().getHistory()) {
             System.out.println(task);
         }
 
@@ -45,7 +45,7 @@ public class Main {
         }
 
         System.out.println("All history:");
-        for (Task task : taskManager.getHistoryManager().getHistory()){
+        for (Task task : taskManager.getHistoryManager().getHistory()) {
             System.out.println(task);
         }
 
@@ -55,7 +55,7 @@ public class Main {
         }
 
         System.out.println("All history:");
-        for (Task task : taskManager.getHistoryManager().getHistory()){
+        for (Task task : taskManager.getHistoryManager().getHistory()) {
             System.out.println(task);
         }
 
@@ -69,7 +69,7 @@ public class Main {
         taskManager.updateTask(subtask3);
 
         System.out.println("All history after updating:");
-        for (Task task : taskManager.getHistoryManager().getHistory()){
+        for (Task task : taskManager.getHistoryManager().getHistory()) {
             System.out.println(task);
         }
         System.out.println("After status updates:");
@@ -78,7 +78,7 @@ public class Main {
         System.out.println("Epic2: " + taskManager.findById(epic2.getId()));
 
         System.out.println("All history:");
-        for (Task task : taskManager.getHistoryManager().getHistory()){
+        for (Task task : taskManager.getHistoryManager().getHistory()) {
             System.out.println(task);
         }
 
@@ -101,7 +101,7 @@ public class Main {
             System.out.println(sub);
         }
         System.out.println("All history:");
-        for (Task task : taskManager.getHistoryManager().getHistory()){
+        for (Task task : taskManager.getHistoryManager().getHistory()) {
             System.out.println(task);
         }
     }

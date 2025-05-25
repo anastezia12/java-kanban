@@ -1,7 +1,6 @@
 package test;
 
 import main.manager.HistoryManager;
-import main.manager.InMemoryHistoryManager;
 import main.manager.Managers;
 import main.manager.TaskManager;
 import main.task.Status;
@@ -22,7 +21,7 @@ class InMemoryHistoryManagerTest {
     public void savingTasksInOrder() {
         List<Task> tasks = new LinkedList<>();
         for (int i = 1; i < 12; i++) {
-            Task task = new Task(i,"name" + i, "description" + i, Status.IN_PROGRESS);
+            Task task = new Task(i, "name" + i, "description" + i, Status.IN_PROGRESS);
             historyManager.add(task);
             tasks.add(task);
         }
@@ -41,7 +40,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    public void deletingTaskFromHistory(){
+    public void deletingTaskFromHistory() {
         Task task1 = new Task("name1", "desc1");
         task1.setId(1);
         historyManager.add(task1);
