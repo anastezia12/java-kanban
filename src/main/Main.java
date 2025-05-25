@@ -20,19 +20,22 @@ public class Main {
         Epic epic1 = new Epic("Epic1", "Description epic1");
         Epic epic2 = new Epic("Epic2", "Description epic2");
         taskManager.addTask(epic1);
+        taskManager.addTask(epic2);
 
         Subtask subtask1 = new Subtask("Subtask1", "Description subtask1", epic1);
         Subtask subtask2 = new Subtask("Subtask2", "Description subtask2", epic1);
+        Subtask subtask3 = new Subtask("Subtask3", "Description subtask3", epic1);
+        taskManager.addTask(subtask3);
         taskManager.addTask(subtask1);
         taskManager.addTask(subtask2);
 
-        taskManager.addTask(epic2);
-        Subtask subtask3 = new Subtask("Subtask3", "Description subtask3", epic2);
-        taskManager.addTask(subtask3);
-
-
         System.out.println("All tasks:");
         for (Task task : taskManager.getAllTasks()) {
+            System.out.println(task);
+        }
+
+        System.out.println("All history:");
+        for (Task task : taskManager.getHistoryManager().getHistory()) {
             System.out.println(task);
         }
 
@@ -41,9 +44,19 @@ public class Main {
             System.out.println(epic);
         }
 
+        System.out.println("All history:");
+        for (Task task : taskManager.getHistoryManager().getHistory()) {
+            System.out.println(task);
+        }
+
         System.out.println("All subtasks:");
         for (Subtask sub : taskManager.getAllSubtasks()) {
             System.out.println(sub);
+        }
+
+        System.out.println("All history:");
+        for (Task task : taskManager.getHistoryManager().getHistory()) {
+            System.out.println(task);
         }
 
         task1.setStatus(Status.DONE);
@@ -55,10 +68,19 @@ public class Main {
         taskManager.updateTask(subtask2);
         taskManager.updateTask(subtask3);
 
+        System.out.println("All history after updating:");
+        for (Task task : taskManager.getHistoryManager().getHistory()) {
+            System.out.println(task);
+        }
         System.out.println("After status updates:");
         System.out.println("Task1: " + taskManager.findById(task1.getId()));
         System.out.println("Epic1: " + taskManager.findById(epic1.getId()));
         System.out.println("Epic2: " + taskManager.findById(epic2.getId()));
+
+        System.out.println("All history:");
+        for (Task task : taskManager.getHistoryManager().getHistory()) {
+            System.out.println(task);
+        }
 
         taskManager.deleteById(task2.getId());
         taskManager.deleteById(epic1.getId());
@@ -77,6 +99,10 @@ public class Main {
         System.out.println("All subtasks:");
         for (Subtask sub : taskManager.getAllSubtasks()) {
             System.out.println(sub);
+        }
+        System.out.println("All history:");
+        for (Task task : taskManager.getHistoryManager().getHistory()) {
+            System.out.println(task);
         }
     }
 }

@@ -1,5 +1,3 @@
-package test;
-
 import main.manager.Managers;
 import main.manager.TaskManager;
 import main.task.Epic;
@@ -103,7 +101,7 @@ class InMemoryTaskManagerTest {
         inMemoryTaskManager.addTask(subtask2);
         inMemoryTaskManager.addTask(subtask3);
         inMemoryTaskManager.getAllSubtasks();
-        Task[] tasks = {subtask1, subtask2, subtask3};
+        Task[] tasks = {epic1, subtask1, subtask2, subtask3};
         assertArrayEquals(tasks, inMemoryTaskManager.getHistoryManager().getHistory().toArray());
     }
 
@@ -117,9 +115,23 @@ class InMemoryTaskManagerTest {
         inMemoryTaskManager.addTask(subtask2);
         inMemoryTaskManager.addTask(subtask3);
         inMemoryTaskManager.getAllSubtaskFromEpic(1);
-        Task[] tasks = {subtask1, subtask2, subtask3};
+        Task[] tasks = {epic1, subtask1, subtask2, subtask3};
         assertArrayEquals(tasks, inMemoryTaskManager.getHistoryManager().getHistory().toArray());
+    }
 
+    @Test
+    public void removeAllSubtasksFromHistoryFromEpicWhenDeletingEpic() {
+        inMemoryTaskManager.addTask(epic1);
+        Subtask subtask1 = new Subtask("task", "task", epic1);
+        Subtask subtask2 = new Subtask("task", "task", epic1);
+        Subtask subtask3 = new Subtask("task", "task", epic1);
+        inMemoryTaskManager.addTask(subtask1);
+        inMemoryTaskManager.addTask(subtask2);
+        inMemoryTaskManager.addTask(subtask3);
+        inMemoryTaskManager.getAllSubtaskFromEpic(1);
+        inMemoryTaskManager.deleteById(epic1.getId());
+        Task[] tasks = {};
+        assertArrayEquals(tasks, inMemoryTaskManager.getHistoryManager().getHistory().toArray());
     }
 
 }
