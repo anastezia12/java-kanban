@@ -1,4 +1,4 @@
-package test.java;
+package test;
 
 import main.manager.Managers;
 import main.manager.TaskManager;

@@ -1,4 +1,4 @@
-package test.java;
+package test;
 
 import main.task.Epic;
 import main.task.Task;
