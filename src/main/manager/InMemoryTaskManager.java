@@ -65,8 +65,8 @@ public class InMemoryTaskManager implements TaskManager {
                 Epic epic = (Epic) tasks.get(id);
                 List<Integer> subtask = epic.getSubtasks();
                 for (int idOfSubtask : subtask) {
-                    tasks.get(Integer.valueOf(idOfSubtask)).setId(0);
-                    tasks.remove(Integer.valueOf(idOfSubtask));
+                    tasks.get(idOfSubtask).setId(0);
+                    tasks.remove(idOfSubtask);
                     historyManager.remove(idOfSubtask);
                 }
             } else if (tasks.get(id).getType() == TaskType.SUBTASK) {
@@ -75,8 +75,8 @@ public class InMemoryTaskManager implements TaskManager {
                 epic.deleteSubtaskFromEpic(id);
                 epic.updateStatus(tasks);
             }
-            tasks.get(Integer.valueOf(id)).setId(0);
-            tasks.remove(Integer.valueOf(id));
+            tasks.get(id).setId(0);
+            tasks.remove(id);
             historyManager.remove(id);
         }
     }

@@ -3,13 +3,13 @@ package main.manager;
 import main.data.Node;
 import main.task.Task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private Map<Integer, Node<Task>> history;
+    private final Map<Integer, Node<Task>> history;
     private Node<Task> head;
     private Node<Task> tail;
 
@@ -19,7 +19,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         tail = null;
     }
 
-    public void removeNode(Node<Task> node) {
+    private void removeNode(Node<Task> node) {
         if (node.getPrev() != null) {
             node.getPrev().setNext(node.getNext());
         } else {
@@ -57,8 +57,8 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getHistory() {
-        List<Task> history = new LinkedList<>();
-        Node current = head;
+        List<Task> history = new ArrayList<>();
+        Node<Task> current = head;
         while (current != null) {
             history.add((Task) current.getInfo());
             current = current.getNext();
