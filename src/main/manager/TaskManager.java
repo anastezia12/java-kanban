@@ -30,4 +30,6 @@ public interface TaskManager {
     List<Subtask> getAllSubtasks();
 
     HistoryManager getHistoryManager();
+
+    List<Task> getListTasks();
 }

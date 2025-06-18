@@ -1,14 +1,14 @@
-package main.manager;
+package main.manager.InMemory;
 
+import main.manager.HistoryManager;
+import main.manager.Managers;
+import main.manager.TaskManager;
 import main.task.Epic;
 import main.task.Subtask;
 import main.task.Task;
 import main.task.TaskType;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -21,6 +21,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public void addTask(Task task) {
+
         task.setId(counter);
         tasks.put(counter, task);
         if (task.getType() == TaskType.SUBTASK) {
@@ -151,4 +152,11 @@ public class InMemoryTaskManager implements TaskManager {
     public HistoryManager getHistoryManager() {
         return historyManager;
     }
+
+    public List<Task> getListTasks() {
+        List<Task> allTasks = new ArrayList<>(tasks.values());
+        return allTasks;
+    }
+
+
 }

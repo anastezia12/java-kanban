@@ -100,9 +100,6 @@ public class Main {
         for (Subtask sub : taskManager.getAllSubtasks()) {
             System.out.println(sub);
         }
-        System.out.println("All history:");
-        for (Task task : taskManager.getHistoryManager().getHistory()) {
-            System.out.println(task);
-        }
+
     }
 }
