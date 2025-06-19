@@ -157,6 +157,4 @@ public class InMemoryTaskManager implements TaskManager {
         List<Task> allTasks = new ArrayList<>(tasks.values());
         return allTasks;
     }
-
-
 }
