@@ -3,21 +3,20 @@ package main.task;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Task {
     private int id;
     private String name;
     private String description;
     private Status status;
-private Duration duration;
-private LocalDateTime startTime;
+    private Duration duration;
+    private LocalDateTime startTime;
 
     public Task(String name, String description, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.startTime = startTime;
-         this.duration = duration;
+        this.duration = duration;
         this.status = Status.NEW;
     }
 
@@ -89,7 +88,6 @@ private LocalDateTime startTime;
     }
 
 
-
     @Override
     public String toString() {
         return "Task{" +
@@ -110,7 +108,7 @@ private LocalDateTime startTime;
         return new Task(this);
     }
 
-    public LocalDateTime getEndTime(){
+    public LocalDateTime getEndTime() {
         return startTime.plus(duration);
     }
 

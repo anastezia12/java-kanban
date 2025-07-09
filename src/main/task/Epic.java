@@ -1,17 +1,15 @@
 package main.task;
 
-import main.manager.TaskManager;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class Epic extends Task {
     private List<Integer> subtasksId;
     private LocalDateTime endTime;
+
     public Epic(String name, String description) {
         super(name, description, null, Duration.ZERO);
         subtasksId = new LinkedList<>();
@@ -26,7 +24,7 @@ public class Epic extends Task {
         subtasksId.add(subtask.getId());
     }
 
-    public void updateTime(Map<Integer, Task> tasks){
+    public void updateTime(Map<Integer, Task> tasks) {
         LocalDateTime earliest = null;
         LocalDateTime latest = null;
         Duration totalDuration = Duration.ZERO;

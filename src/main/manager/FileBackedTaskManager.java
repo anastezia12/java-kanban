@@ -8,17 +8,15 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
     private final File saveFile;
-private static final DateTimeFormatter dateTimeFormatter= DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
-private final DateTimeFormatter timeFormater = DateTimeFormatter.ofPattern("HH:mm");
+    private final DateTimeFormatter timeFormater = DateTimeFormatter.ofPattern("HH:mm");
 
     public FileBackedTaskManager(File saveFile) {
         this.saveFile = saveFile;
@@ -38,7 +36,7 @@ private final DateTimeFormatter timeFormater = DateTimeFormatter.ofPattern("HH:m
                 String name = fields[2];
                 Status status = Status.valueOf(fields[3]);
                 String description = fields[7];
-                LocalDateTime startTime= LocalDateTime.parse(fields[4], dateTimeFormatter);
+                LocalDateTime startTime = LocalDateTime.parse(fields[4], dateTimeFormatter);
                 Duration duration = Duration.ofMinutes(Integer.parseInt(fields[5]));
 
                 switch (type) {
@@ -71,7 +69,7 @@ private final DateTimeFormatter timeFormater = DateTimeFormatter.ofPattern("HH:m
                 String startTimeStr = i.getStartTime() != null
                         ? i.getStartTime().format(dateTimeFormatter)
                         : "";
-                writer.write(i.getId() + ", " + i.getType() + ", " + i.getName() + ", " + i.getStatus() + ", " + startTimeStr + ", " +  i.getDuration().toMinutes() + ", " + i.getEndTime() + ", " + i.getDescription());
+                writer.write(i.getId() + ", " + i.getType() + ", " + i.getName() + ", " + i.getStatus() + ", " + startTimeStr + ", " + i.getDuration().toMinutes() + ", " + i.getEndTime() + ", " + i.getDescription());
                 if (i.getType() == TaskType.SUBTASK) {
                     writer.write(", " + ((Subtask) i).getIdOfEpic());
                 }

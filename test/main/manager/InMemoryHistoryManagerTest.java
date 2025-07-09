@@ -14,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InMemoryHistoryManagerTest {
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
     HistoryManager historyManager = Managers.getDefaultHistory();
     TaskManager taskManager = Managers.getDefault();
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
     private LocalDateTime startTime = LocalDateTime.parse("11:12 12.10.24", dateTimeFormatter);
 
     @Test

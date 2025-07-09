@@ -72,7 +72,7 @@ class EpicTest {
     }
 
     @Test
-    public void durationAdnStartTimeForEpicIsSameWithDurationOfSubtask(){
+    public void durationAdnStartTimeForEpicIsSameWithDurationOfSubtask() {
         Epic epic = new Epic("name", " description");
         TaskManager taskManager = Managers.getDefault();
         taskManager.addTask(epic);
@@ -83,7 +83,7 @@ class EpicTest {
     }
 
     @Test
-    public void durationOfEpicIsAddingDurationOfSubtasks(){
+    public void durationOfEpicIsAddingDurationOfSubtasks() {
         Epic epic = new Epic("name", " description");
         TaskManager taskManager = Managers.getDefault();
         taskManager.addTask(epic);
@@ -95,7 +95,7 @@ class EpicTest {
     }
 
     @Test
-    public void StartTimeOfEpicIsEarliestStartTimeOfSubtasks(){
+    public void StartTimeOfEpicIsEarliestStartTimeOfSubtasks() {
         Epic epic = new Epic("name", " description");
         TaskManager taskManager = Managers.getDefault();
         taskManager.addTask(epic);
@@ -107,7 +107,7 @@ class EpicTest {
     }
 
     @Test
-    public void SendTimeOfEpicIsLatestTimeOfSubtasks(){
+    public void SendTimeOfEpicIsLatestTimeOfSubtasks() {
         Epic epic = new Epic("name", " description");
         TaskManager taskManager = Managers.getDefault();
         taskManager.addTask(epic);

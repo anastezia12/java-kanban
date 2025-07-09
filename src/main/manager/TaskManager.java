@@ -6,7 +6,6 @@ import main.task.Task;
 
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 public interface TaskManager {
     void addTask(Task task);

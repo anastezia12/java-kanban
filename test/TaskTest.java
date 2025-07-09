@@ -15,7 +15,7 @@ class TaskTest {
 
     @Test
     public void sameIdSameTask() {
-        Task task1 = new Task("name", "description",startTime, Duration.ofMinutes(30) );
+        Task task1 = new Task("name", "description", startTime, Duration.ofMinutes(30));
         Task task2 = new Task("name2", " description2", startTime.plusHours(1), Duration.ofMinutes(30));
         task1.setId(1);
         task2.setId(1);
