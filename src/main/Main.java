@@ -19,7 +19,7 @@ public class Main {
 
         LocalDateTime startTime = LocalDateTime.parse("11:12 12.10.24", dateTimeFormatter);
         Task task1 = new Task("Task1", "Description task1", startTime, Duration.ofMinutes(60));
-        Task task2 = new Task("Task2", "Description task2", startTime.plusDays(1),Duration.ofMinutes(120) );
+        Task task2 = new Task("Task2", "Description task2", startTime.plusDays(1), Duration.ofMinutes(120));
         taskManager.addTask(task1);
         taskManager.addTask(task2);
 
