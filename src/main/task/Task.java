@@ -1,24 +1,33 @@
 package main.task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Task {
     private int id;
     private String name;
     private String description;
     private Status status;
+private Duration duration;
+private LocalDateTime startTime;
 
-    public Task(String name, String description) {
+    public Task(String name, String description, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
+        this.startTime = startTime;
+         this.duration = duration;
         this.status = Status.NEW;
     }
 
-    public Task(int id, String name, String description, Status status) {
+    public Task(int id, String name, String description, Status status, LocalDateTime startTime, Duration duration) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public Task(Task task) {
@@ -26,6 +35,8 @@ public class Task {
         name = task.name;
         description = task.description;
         status = task.status;
+        startTime = task.startTime;
+        duration = task.duration;
     }
 
     public int getId() {
@@ -77,9 +88,18 @@ public class Task {
         return Objects.hash(id);
     }
 
+
+
     @Override
     public String toString() {
-        return "main.task.Task{" + "id=" + id + ", name='" + name + '\'' + ", description='" + description + '\'' + ", status=" + status + '}';
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", duration=" + duration.toMinutes() +
+                ", startTime=" + startTime +
+                '}';
     }
 
     public TaskType getType() {
@@ -88,5 +108,26 @@ public class Task {
 
     public Task copy() {
         return new Task(this);
+    }
+
+    public LocalDateTime getEndTime(){
+        return startTime.plus(duration);
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
     }
 }

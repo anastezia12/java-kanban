@@ -1,19 +1,25 @@
-import main.manager.Managers;
-import main.manager.TaskManager;
+package main.manager;
+
 import main.task.Epic;
 import main.task.Subtask;
 import main.task.Task;
 import main.task.TaskType;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
+    private LocalDateTime startTime = LocalDateTime.parse("11:12 12.10.24", dateTimeFormatter);
 
     private final TaskManager inMemoryTaskManager = Managers.getDefault();
-    private final Task task1 = new Task("name", "description");
-    private final Task task2 = new Task("name2", " description2");
-    private final Task task3 = new Task("task", "task");
+    private final Task task1 = new Task("name", "description", startTime, Duration.ofMinutes(30));
+    private final Task task2 = new Task("name2", " description2", startTime.plusHours(1), Duration.ofMinutes(30));
+    private final Task task3 = new Task("task", "task", startTime.plusHours(2), Duration.ofMinutes(30));
     private final Epic epic1 = new Epic("name", "description");
     private final Epic epic2 = new Epic("task", "task");
     private final Epic epic3 = new Epic("task", "task");
@@ -38,7 +44,7 @@ class InMemoryTaskManagerTest {
     public void canEddSubtaskWithExistingEpic() {
         inMemoryTaskManager.addTask(epic1);
 
-        Subtask subtask = new Subtask("name", "description", epic1);
+        Subtask subtask = new Subtask("name", "description", epic1, startTime.plusDays(1), Duration.ofMinutes(30));
         inMemoryTaskManager.addTask(subtask);
         Task[] tasks = {subtask};
         assertArrayEquals(tasks, inMemoryTaskManager.getAllSubtasks().toArray());
@@ -94,9 +100,9 @@ class InMemoryTaskManagerTest {
     @Test
     public void addingTaskToHistoryAfterLookingForSubtasks() {
         inMemoryTaskManager.addTask(epic1);
-        Subtask subtask1 = new Subtask("name", "description", epic1);
-        Subtask subtask2 = new Subtask("name", "description", epic1);
-        Subtask subtask3 = new Subtask("name", "description", epic1);
+        Subtask subtask1 = new Subtask("name", "description", epic1, startTime.plusHours(3),Duration.ofMinutes(30));
+        Subtask subtask2 = new Subtask("name", "description", epic1, startTime.plusHours(4),Duration.ofMinutes(30));
+        Subtask subtask3 = new Subtask("name", "description", epic1, startTime.plusHours(5), Duration.ofMinutes(30));
         inMemoryTaskManager.addTask(subtask1);
         inMemoryTaskManager.addTask(subtask2);
         inMemoryTaskManager.addTask(subtask3);
@@ -108,9 +114,9 @@ class InMemoryTaskManagerTest {
     @Test
     public void addingTaskToHistoryAfterLookingForSubtasksFromEpic() {
         inMemoryTaskManager.addTask(epic1);
-        Subtask subtask1 = new Subtask("task", "task", epic1);
-        Subtask subtask2 = new Subtask("task", "task", epic1);
-        Subtask subtask3 = new Subtask("task", "task", epic1);
+        Subtask subtask1 = new Subtask("task", "task", epic1,startTime.plusHours(3), Duration.ofMinutes(30));
+        Subtask subtask2 = new Subtask("task", "task", epic1,startTime.plusHours(4),Duration.ofMinutes(30));
+        Subtask subtask3 = new Subtask("task", "task", epic1,startTime.plusHours(5),Duration.ofMinutes(30));
         inMemoryTaskManager.addTask(subtask1);
         inMemoryTaskManager.addTask(subtask2);
         inMemoryTaskManager.addTask(subtask3);
@@ -122,9 +128,9 @@ class InMemoryTaskManagerTest {
     @Test
     public void removeAllSubtasksFromHistoryFromEpicWhenDeletingEpic() {
         inMemoryTaskManager.addTask(epic1);
-        Subtask subtask1 = new Subtask("task", "task", epic1);
-        Subtask subtask2 = new Subtask("task", "task", epic1);
-        Subtask subtask3 = new Subtask("task", "task", epic1);
+        Subtask subtask1 = new Subtask("task", "task", epic1, startTime.plusHours(3), Duration.ofMinutes(30));
+        Subtask subtask2 = new Subtask("task", "task", epic1, startTime.plusHours(4), Duration.ofMinutes(30));
+        Subtask subtask3 = new Subtask("task", "task", epic1, startTime.plusHours(5), Duration.ofMinutes(30));
         inMemoryTaskManager.addTask(subtask1);
         inMemoryTaskManager.addTask(subtask2);
         inMemoryTaskManager.addTask(subtask3);
@@ -134,4 +140,30 @@ class InMemoryTaskManagerTest {
         assertArrayEquals(tasks, inMemoryTaskManager.getHistoryManager().getHistory().toArray());
     }
 
+    @Test
+    public void cantAddWhenTimeIntersect(){
+        inMemoryTaskManager.addTask(epic1);
+        Subtask subtask1 = new Subtask("name", "description", epic1, startTime.plusHours(3),Duration.ofMinutes(30));
+        Subtask subtask2 = new Subtask("name", "description", epic1, startTime.plusHours(2).plusMinutes(45),Duration.ofMinutes(30));
+        inMemoryTaskManager.addTask(subtask1);
+        assertThrows(IllegalArgumentException.class, () -> inMemoryTaskManager.addTask(subtask2));
+    }
+
+    @Test
+    public void doesTimeIntersectWith2SameTimeTasks(){
+       // inMemoryTaskManager.addTask(epic1);
+        Subtask subtask1 = new Subtask("name", "description", epic1, startTime.plusHours(3),Duration.ofMinutes(30));
+        Subtask subtask2 = new Subtask("name", "description", epic1, startTime.plusHours(2).plusMinutes(45),Duration.ofMinutes(30));
+
+        assertTrue(inMemoryTaskManager.doesTimeIntersect(subtask1, subtask2));
+    }
+
+    @Test
+    public void doesTimeIntersectWith2DifferentTimeTasks(){
+        // inMemoryTaskManager.addTask(epic1);
+        Subtask subtask1 = new Subtask("name", "description", epic1, startTime.plusHours(3),Duration.ofMinutes(30));
+        Subtask subtask2 = new Subtask("name", "description", epic1, startTime.plusHours(4).plusMinutes(45),Duration.ofMinutes(30));
+
+        assertFalse(inMemoryTaskManager.doesTimeIntersect(subtask1, subtask2));
+    }
 }
