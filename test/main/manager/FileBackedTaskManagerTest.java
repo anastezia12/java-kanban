@@ -1,8 +1,5 @@
 package main.manager;
 
-import main.task.Epic;
-import main.task.Subtask;
-import main.task.Task;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -12,15 +9,21 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FileBackedTaskManagerTest {
-    private FileBackedTaskManager managerWithSampleTasks(File file) throws IOException {
+class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
+
+    @Override
+    protected FileBackedTaskManager createTaskManager() throws IOException {
+        File tempFile = File.createTempFile("test", ".txt");
+        tempFile.deleteOnExit();
+        return new FileBackedTaskManager(tempFile);
+    }
+
+    private FileBackedTaskManager managerWithSampleTasks(File file) {
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
-        Task task = new Task("task1", "desc task 1");
-        manager.addTask(task);
-        Epic epic = new Epic("epic1", "epic1");
-        manager.addTask(epic);
-        Subtask subtask = new Subtask("sub1", "desc sub1", epic);
-        manager.addTask(subtask);
+        manager.addTask(task1);
+        manager.addTask(epic1);
+        oneSubtask();
+        manager.addTask(subtask1);
         return manager;
     }
 
@@ -58,15 +61,15 @@ class FileBackedTaskManagerTest {
     @Test
     public void saveOfFewTasks() throws IOException {
         FileBackedTaskManager manager = new FileBackedTaskManager(File.createTempFile("Text", ".txt"));
-        Task task = new Task("task1", "desc task 1");
-        manager.addTask(task);
-        Epic epic = new Epic("epic1", "epic1");
-        manager.addTask(epic);
-        Subtask subtask = new Subtask("sub1", "desc sub1", epic);
-        manager.addTask(subtask);
-        assertEquals(List.of(task, epic, subtask), manager.getListTasks());
-        assertEquals(List.of(task), manager.getAllTasks());
-        assertEquals(List.of(epic), manager.getAllEpic());
-        assertEquals(List.of(subtask), manager.getAllSubtasks());
+        manager.addTask(task1);
+        manager.addTask(epic1);
+        oneSubtask();
+        manager.addTask(subtask1);
+        assertEquals(List.of(task1, epic1, subtask1), manager.getListTasks());
+        assertEquals(List.of(task1), manager.getAllTasks());
+        assertEquals(List.of(epic1), manager.getAllEpic());
+        assertEquals(List.of(subtask1), manager.getAllSubtasks());
     }
+
+
 }

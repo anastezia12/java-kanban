@@ -5,6 +5,7 @@ import main.task.Subtask;
 import main.task.Task;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
     void addTask(Task task);
@@ -32,4 +33,8 @@ public interface TaskManager {
     HistoryManager getHistoryManager();
 
     List<Task> getListTasks();
+
+    Set<Task> getPrioritizedTasks();
+
+    boolean doesTimeIntersect(Task task1, Task task2);
 }

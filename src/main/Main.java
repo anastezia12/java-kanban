@@ -7,13 +7,19 @@ import main.task.Status;
 import main.task.Subtask;
 import main.task.Task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Main {
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
 
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
 
-        Task task1 = new Task("Task1", "Description task1");
-        Task task2 = new Task("Task2", "Description task2");
+        LocalDateTime startTime = LocalDateTime.parse("11:12 12.10.24", dateTimeFormatter);
+        Task task1 = new Task("Task1", "Description task1", startTime, Duration.ofMinutes(60));
+        Task task2 = new Task("Task2", "Description task2", startTime.plusDays(1), Duration.ofMinutes(120));
         taskManager.addTask(task1);
         taskManager.addTask(task2);
 
@@ -22,9 +28,9 @@ public class Main {
         taskManager.addTask(epic1);
         taskManager.addTask(epic2);
 
-        Subtask subtask1 = new Subtask("Subtask1", "Description subtask1", epic1);
-        Subtask subtask2 = new Subtask("Subtask2", "Description subtask2", epic1);
-        Subtask subtask3 = new Subtask("Subtask3", "Description subtask3", epic1);
+        Subtask subtask1 = new Subtask("Subtask1", "Description subtask1", epic1, startTime.plusDays(2), Duration.ofMinutes(60));
+        Subtask subtask2 = new Subtask("Subtask2", "Description subtask2", epic1, startTime.plusDays(3), Duration.ofMinutes(60));
+        Subtask subtask3 = new Subtask("Subtask3", "Description subtask3", epic1, startTime.plusDays(4), Duration.ofMinutes(60));
         taskManager.addTask(subtask3);
         taskManager.addTask(subtask1);
         taskManager.addTask(subtask2);
@@ -98,6 +104,12 @@ public class Main {
 
         System.out.println("All subtasks:");
         for (Subtask sub : taskManager.getAllSubtasks()) {
+            System.out.println(sub);
+        }
+
+
+        System.out.println("All prioritized asks:");
+        for (Task sub : taskManager.getPrioritizedTasks()) {
             System.out.println(sub);
         }
 
