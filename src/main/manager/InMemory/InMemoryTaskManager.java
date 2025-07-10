@@ -38,7 +38,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         }
 
-        historyManager.add(task);
+        historyManager.add(task.copy());
         counter++;
         if (task.getStartTime() != null) {
             taskByTime.add(task);
@@ -121,14 +121,23 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public Task findById(int id) {
-        return tasks.values().stream().filter(task -> task.getId() == id).peek(task -> historyManager.add(task.copy())).findFirst().orElse(null);
+        return tasks.values()
+                .stream()
+                .filter(task -> task.getId() == id)
+                .peek(task -> historyManager.add(task.copy()))
+                .findFirst()
+                .orElse(null);
     }
 
     public List<Subtask> getAllSubtaskFromEpic(int idOfEpic) {
         Epic epic = (Epic) tasks.get(idOfEpic);
         List<Subtask> subtasks = new LinkedList<>();
         if (epic != null) {
-            subtasks = epic.getSubtasks().stream().map(idOfSubtask -> (Subtask) tasks.get(idOfSubtask)).peek(task -> historyManager.add(task.copy())).toList();
+            subtasks = epic.getSubtasks()
+                    .stream()
+                    .map(idOfSubtask -> (Subtask) tasks.get(idOfSubtask))
+                    .peek(task -> historyManager.add(task.copy()))
+                    .toList();
         }
         return subtasks;
     }
@@ -137,7 +146,8 @@ public class InMemoryTaskManager implements TaskManager {
         return tasks.values().stream()
                 .filter(task -> task.getType() == TaskType.TASK)
                 .peek(task -> historyManager.add(task.copy()))
-                .map(task -> (Task) task).toList();
+                .map(task -> (Task) task)
+                .toList();
     }
 
 

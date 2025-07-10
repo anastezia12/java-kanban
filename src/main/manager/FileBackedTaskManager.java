@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
@@ -24,9 +25,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static FileBackedTaskManager loadFromFile(File file) throws ManagerSaveException {
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
-        try (BufferedReader bufferedReader = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream(file), StandardCharsets.UTF_8))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
             bufferedReader.readLine();
             Map<Integer, Integer> idsOfEpics = new HashMap<>();
             while (bufferedReader.ready()) {
@@ -65,19 +64,40 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private void save() {
         try (FileWriter writer = new FileWriter(saveFile, StandardCharsets.UTF_8)) {
             writer.write("id, type, name, status, start time,duration, end time, description, epic\n");
-            for (Task i : super.getListTasks()) {
-                String startTimeStr = i.getStartTime() != null
-                        ? i.getStartTime().format(dateTimeFormatter)
-                        : "";
-                writer.write(i.getId() + ", " + i.getType() + ", " + i.getName() + ", " + i.getStatus() + ", " + startTimeStr + ", " + i.getDuration().toMinutes() + ", " + i.getEndTime() + ", " + i.getDescription());
-                if (i.getType() == TaskType.SUBTASK) {
-                    writer.write(", " + ((Subtask) i).getIdOfEpic());
+            super.getListTasks().forEach(i -> {
+                try {
+                    writer.write(taskInLineForSaving(i));
+                } catch (IOException e) {
+                    throw new RuntimeException("Ошибка при сохранении данных в файл", e);
                 }
-                writer.write("\n");
-            }
+            });
+
         } catch (IOException exception) {
             throw new ManagerSaveException("Ошибка при сохранении данных в файл", exception);
         }
+    }
+
+    private String taskInLineForSaving(Task task) {
+        String startTimeStr = Optional.ofNullable(task.getStartTime()).map(t -> t.format(dateTimeFormatter)).orElse("");
+
+        String endTime = Optional.ofNullable(task.getEndTime()).map(t -> t.format(dateTimeFormatter)).orElse("");
+
+        StringBuilder newTaskToWrite = new StringBuilder();
+        newTaskToWrite.append(task.getId()).append(", ")
+                .append(task.getType()).append(", ")
+                .append(task.getName()).append(", ")
+                .append(task.getStatus()).append(", ")
+                .append(startTimeStr).append(", ")
+                .append(task.getDuration().toMinutes()).append(", ")
+                .append(endTime).append(", ")
+                .append(task.getDescription());
+        if (task.getType() == TaskType.SUBTASK) {
+
+            newTaskToWrite.append(", ").append(((Subtask) task).getIdOfEpic());
+        }
+        newTaskToWrite.append("\n");
+
+        return newTaskToWrite.toString();
     }
 
     @Override

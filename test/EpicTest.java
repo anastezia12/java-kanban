@@ -6,14 +6,12 @@ import main.task.Subtask;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
+import static main.manager.TImeConstants.START_TIME;
+import static main.manager.TImeConstants.THIRTY_MINUTES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EpicTest {
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
-    private LocalDateTime startTime = LocalDateTime.parse("11:12 12.10.24", dateTimeFormatter);
 
     @Test
     public void statusForNewEpicIsNew() {
@@ -26,7 +24,7 @@ class EpicTest {
         Epic epic = new Epic("name", " description");
         TaskManager taskManager = Managers.getDefault();
         taskManager.addTask(epic);
-        Subtask subtask = new Subtask("name", "description", epic, startTime, Duration.ofMinutes(30));
+        Subtask subtask = new Subtask("name", "description", epic, START_TIME, THIRTY_MINUTES);
         taskManager.addTask(subtask);
         assertEquals(Status.NEW, epic.getStatus());
     }
@@ -36,7 +34,7 @@ class EpicTest {
         Epic epic = new Epic("name", " description");
         TaskManager taskManager = Managers.getDefault();
         taskManager.addTask(epic);
-        Subtask subtask = new Subtask("name", "description", epic, startTime, Duration.ofMinutes(20));
+        Subtask subtask = new Subtask("name", "description", epic, START_TIME, THIRTY_MINUTES);
         taskManager.addTask(subtask);
         subtask.setStatus(Status.IN_PROGRESS);
         taskManager.updateTask(subtask);
@@ -48,7 +46,7 @@ class EpicTest {
         Epic epic = new Epic("name", " description");
         TaskManager taskManager = Managers.getDefault();
         taskManager.addTask(epic);
-        Subtask subtask = new Subtask("name", "description", epic, startTime, Duration.ofMinutes(30));
+        Subtask subtask = new Subtask("name", "description", epic, START_TIME, THIRTY_MINUTES);
         taskManager.addTask(subtask);
         subtask.setStatus(Status.DONE);
         taskManager.updateTask(subtask);
@@ -60,11 +58,11 @@ class EpicTest {
         Epic epic = new Epic("name", " description");
         TaskManager taskManager = Managers.getDefault();
         taskManager.addTask(epic);
-        Subtask subtask = new Subtask("name", "description", epic, startTime, Duration.ofMinutes(30));
+        Subtask subtask = new Subtask("name", "description", epic, START_TIME, THIRTY_MINUTES);
         taskManager.addTask(subtask);
         subtask.setStatus(Status.DONE);
         taskManager.updateTask(subtask);
-        Subtask subtask2 = new Subtask("name2", "description2", epic, startTime.plusHours(1), Duration.ofMinutes(30));
+        Subtask subtask2 = new Subtask("name2", "description2", epic, START_TIME.plusHours(1), THIRTY_MINUTES);
         taskManager.addTask(subtask2);
         subtask2.setStatus(Status.IN_PROGRESS);
         taskManager.updateTask(subtask2);
@@ -76,10 +74,10 @@ class EpicTest {
         Epic epic = new Epic("name", " description");
         TaskManager taskManager = Managers.getDefault();
         taskManager.addTask(epic);
-        Subtask subtask = new Subtask("name", "description", epic, startTime, Duration.ofMinutes(30));
+        Subtask subtask = new Subtask("name", "description", epic, START_TIME, THIRTY_MINUTES);
         taskManager.addTask(subtask);
-        assertEquals(Duration.ofMinutes(30), epic.getDuration());
-        assertEquals(startTime, epic.getStartTime());
+        assertEquals(THIRTY_MINUTES, epic.getDuration());
+        assertEquals(START_TIME, epic.getStartTime());
     }
 
     @Test
@@ -87,9 +85,9 @@ class EpicTest {
         Epic epic = new Epic("name", " description");
         TaskManager taskManager = Managers.getDefault();
         taskManager.addTask(epic);
-        Subtask subtask = new Subtask("name", "description", epic, startTime, Duration.ofMinutes(30));
+        Subtask subtask = new Subtask("name", "description", epic, START_TIME, THIRTY_MINUTES);
         taskManager.addTask(subtask);
-        Subtask subtask1 = new Subtask("name", "description", epic, startTime.plusHours(1), Duration.ofMinutes(30));
+        Subtask subtask1 = new Subtask("name", "description", epic, START_TIME.plusHours(1), THIRTY_MINUTES);
         taskManager.addTask(subtask1);
         assertEquals(Duration.ofHours(1), epic.getDuration());
     }
@@ -99,11 +97,11 @@ class EpicTest {
         Epic epic = new Epic("name", " description");
         TaskManager taskManager = Managers.getDefault();
         taskManager.addTask(epic);
-        Subtask subtask = new Subtask("name", "description", epic, startTime.plusDays(2), Duration.ofMinutes(30));
+        Subtask subtask = new Subtask("name", "description", epic, START_TIME.plusDays(2), THIRTY_MINUTES);
         taskManager.addTask(subtask);
-        Subtask subtask1 = new Subtask("name", "description", epic, startTime.plusHours(1), Duration.ofMinutes(30));
+        Subtask subtask1 = new Subtask("name", "description", epic, START_TIME.plusHours(1), THIRTY_MINUTES);
         taskManager.addTask(subtask1);
-        assertEquals(startTime.plusHours(1), epic.getStartTime());
+        assertEquals(START_TIME.plusHours(1), epic.getStartTime());
     }
 
     @Test
@@ -111,10 +109,10 @@ class EpicTest {
         Epic epic = new Epic("name", " description");
         TaskManager taskManager = Managers.getDefault();
         taskManager.addTask(epic);
-        Subtask subtask = new Subtask("name", "description", epic, startTime.plusDays(2), Duration.ofMinutes(30));
+        Subtask subtask = new Subtask("name", "description", epic, START_TIME.plusDays(2), THIRTY_MINUTES);
         taskManager.addTask(subtask);
-        Subtask subtask1 = new Subtask("name", "description", epic, startTime.plusHours(1), Duration.ofMinutes(30));
+        Subtask subtask1 = new Subtask("name", "description", epic, START_TIME.plusHours(1), THIRTY_MINUTES);
         taskManager.addTask(subtask1);
-        assertEquals(startTime.plusMinutes(30).plusDays(2), epic.getEndTime());
+        assertEquals(START_TIME.plusMinutes(30).plusDays(2), epic.getEndTime());
     }
 }
