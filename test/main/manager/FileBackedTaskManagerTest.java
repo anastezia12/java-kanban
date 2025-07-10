@@ -18,12 +18,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
         return new FileBackedTaskManager(tempFile);
     }
 
-    @Override
-    protected HistoryManager createHistoryManager() {
-        return taskManager.getHistoryManager();
-    }
-
-    private FileBackedTaskManager managerWithSampleTasks(File file) throws IOException {
+    private FileBackedTaskManager managerWithSampleTasks(File file) {
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
         manager.addTask(task1);
         manager.addTask(epic1);

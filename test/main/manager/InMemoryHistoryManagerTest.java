@@ -5,26 +5,32 @@ import main.task.Status;
 import main.task.Task;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
 
 import static main.manager.TImeConstants.START_TIME;
+import static main.manager.TImeConstants.THIRTY_MINUTES;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class InMemoryHistoryManagerTest extends TaskManagerTest<TaskManager> {
+class InMemoryHistoryManagerTest {
+    protected final Task task1 = new Task("name", "description", START_TIME, THIRTY_MINUTES);
+    protected final Task task2 = new Task("name2", " description2", START_TIME.plusHours(1), THIRTY_MINUTES);
+    protected final Task task3 = new Task("task", "task", START_TIME.plusHours(2), THIRTY_MINUTES);
 
+    private final InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
 
-    @Override
-    protected TaskManager createTaskManager() throws IOException {
-        return Managers.getDefault();
-    }
-
-    @Override
-    protected HistoryManager createHistoryManager() {
-        return new InMemoryHistoryManager();
+    @Test
+    public void savingNewTasksInOrder() {
+        List<Task> tasks = new LinkedList<>();
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+        tasks.add(task1);
+        tasks.add(task2);
+        tasks.add(task3);
+        assertArrayEquals(tasks.toArray(), historyManager.getHistory().toArray());
     }
 
     @Test
@@ -41,11 +47,15 @@ class InMemoryHistoryManagerTest extends TaskManagerTest<TaskManager> {
 
     @Test
     public void allTasksInLastOrderAfterAction() {
-        taskManager.addTask(task1);
-        taskManager.addTask(task2);
+        Task[] expected = new Task[3];
+        historyManager.add(task1);
+        historyManager.add(task2);
+        expected[0] = task1.copy();
+        expected[1] = task2.copy();
         task1.setStatus(Status.DONE);
-        taskManager.updateTask(task1);
-        assertArrayEquals(new Task[]{task1, task2, task1}, taskManager.getHistoryManager().getHistory().toArray());
+        historyManager.add(task1);
+        expected[2] = task1.copy();
+        assertArrayEquals(expected, historyManager.getHistory().toArray());
     }
 
     @Test
