@@ -10,7 +10,6 @@ import main.task.TaskType;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
     private final TaskManager taskManager;
@@ -69,7 +68,7 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
             Task task = taskManager.findById(id);
 
             if (task == null || !task.getType().equals(TaskType.SUBTASK)) {
-                throw new IOException( "No subtask with this id");
+                throw new IOException("No subtask with this id");
             } else {
                 return jsonOfTask(task);
             }
