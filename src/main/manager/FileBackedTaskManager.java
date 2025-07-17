@@ -13,9 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static main.data.DateConst.DATE_TIME_FORMATTER;
+
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
     private final File saveFile;
     private final DateTimeFormatter timeFormater = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -35,7 +36,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 String name = fields[2];
                 Status status = Status.valueOf(fields[3]);
                 String description = fields[7];
-                LocalDateTime startTime = LocalDateTime.parse(fields[4], dateTimeFormatter);
+                LocalDateTime startTime = LocalDateTime.parse(fields[4], DATE_TIME_FORMATTER);
                 Duration duration = Duration.ofMinutes(Integer.parseInt(fields[5]));
 
                 switch (type) {
@@ -78,9 +79,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private String taskInLineForSaving(Task task) {
-        String startTimeStr = Optional.ofNullable(task.getStartTime()).map(t -> t.format(dateTimeFormatter)).orElse("");
+        String startTimeStr = Optional.ofNullable(task.getStartTime()).map(t -> t.format(DATE_TIME_FORMATTER)).orElse("");
 
-        String endTime = Optional.ofNullable(task.getEndTime()).map(t -> t.format(dateTimeFormatter)).orElse("");
+        String endTime = Optional.ofNullable(task.getEndTime()).map(t -> t.format(DATE_TIME_FORMATTER)).orElse("");
 
         StringBuilder newTaskToWrite = new StringBuilder();
         newTaskToWrite.append(task.getId()).append(", ")
