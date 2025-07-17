@@ -8,12 +8,13 @@ import main.task.Task;
 import java.io.IOException;
 import java.net.URI;
 
-abstract class BaseCrudHandler <T> extends BaseHttpHandler implements HttpHandler {
+abstract class BaseCrudHandler<T> extends BaseHttpHandler implements HttpHandler {
     protected final TaskManager taskManager;
 
-    public BaseCrudHandler(TaskManager taskManager){
+    public BaseCrudHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
     }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String response;
@@ -54,7 +55,7 @@ abstract class BaseCrudHandler <T> extends BaseHttpHandler implements HttpHandle
 
     }
 
-    protected abstract String handleGetRequest(HttpExchange exchange) throws IOException ;
+    protected abstract String handleGetRequest(HttpExchange exchange) throws IOException;
 
     protected String handleDeleteRequest(HttpExchange exchange) {
         taskManager.deleteById(getIdFromURL(exchange));
@@ -62,19 +63,20 @@ abstract class BaseCrudHandler <T> extends BaseHttpHandler implements HttpHandle
 
     }
 
-    protected int getIdFromURL(HttpExchange exchange){
+    protected int getIdFromURL(HttpExchange exchange) {
         URI requestURI = exchange.getRequestURI();
         String[] splitStrings = requestURI.getPath().split("/");
-        return  Integer.parseInt(splitStrings[2]);
+        return Integer.parseInt(splitStrings[2]);
     }
-    protected boolean isThirdId(HttpExchange exchange){
+
+    protected boolean isThirdId(HttpExchange exchange) {
         URI requestURI = exchange.getRequestURI();
         String[] splitURI = requestURI.getPath().split("/");
-        if(splitURI.length >= 3){
-            try{
+        if (splitURI.length >= 3) {
+            try {
                 Integer.parseInt(splitURI[2]);
                 return true;
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 return false;
             }
         }
