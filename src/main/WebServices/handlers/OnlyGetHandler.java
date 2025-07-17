@@ -1,4 +1,4 @@
-package main.WebServices;
+package main.WebServices.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -6,10 +6,10 @@ import main.manager.TaskManager;
 
 import java.io.IOException;
 
-public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
-    private final TaskManager taskManager;
+abstract class OnlyGetHandler extends BaseHttpHandler implements HttpHandler {
+    protected TaskManager taskManager;
 
-    public PrioritizedHandler(TaskManager taskManager) {
+    public OnlyGetHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
     }
 
@@ -33,7 +33,6 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
         sendText(exchange, response);
     }
 
-    private String handleGetRequest(HttpExchange exchange) {
-        return HttpTaskServer.getGson().toJson(taskManager.getPrioritizedTasks());
-    }
+    protected abstract String handleGetRequest(HttpExchange exchange);
+
 }

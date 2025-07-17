@@ -10,11 +10,9 @@ import main.task.Task;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 
 public class Main {
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
 
     public static void main(String[] args) throws IOException {
         TaskManager taskManager = Managers.getDefault();

@@ -3,6 +3,7 @@ package main.WebServices;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpServer;
+import main.WebServices.handlers.*;
 import main.manager.TaskManager;
 
 import java.io.IOException;
